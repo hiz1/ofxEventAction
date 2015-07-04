@@ -8,35 +8,55 @@
 
 #include "ofxEventAction.h"
 
-void ofxEventAction::raiseEvent(int type) {
-    events.insert(type);
+void ofxEventAction::fireEvent(int type) {
+    events[type] = 1;
 }
 
-void ofxEventAction::update() {
+void ofxEventAction::repeatEvent(int type, int num) {
+    events[type] = num;
+}
+
+void ofxEventAction::stopEvent(int type) {
+    events[type] = 0;
+}
+
+void ofxEventAction::updateEvent() {
     using namespace std;
     // イベントの開始時・ループ時処理
-    for(set<int>::iterator ite=events.begin();ite!=events.end();ite++) {
-        if(preEvents.find(*ite) != preEvents.end()) {
+    for(map<int, int>::iterator ite=events.begin();ite!=events.end();ite++) {
+        if(ite->second == 0) continue;
+        if(preEvents.find(ite->first) != preEvents.end()) {
             // 二回目以降の処理
-            loopEvent(*ite);
+            loopEvent(ite->first);
         } else {
             // 初回処理
-            startEvent(*ite);
+            startEvent(ite->first);
         }
     }
     // イベント終了時の処理
     for(set<int>::iterator ite=preEvents.begin();ite!=preEvents.end();ite++) {
-        if(events.find(*ite) == events.end()) {
+        map<int,int>::iterator fite = events.find(*ite);
+        if(fite == events.end() || fite->second == 0) {
             // 終了時の処理
             endEvent(*ite);
         }
     }
     
-    // 前回イベントにコピー・イベントの初期化
+    // 前回イベントにコピー・イベントの更新
     preEvents.clear();
-    for(set<int>::iterator ite=events.begin();ite!=events.end();ite++) {
-        preEvents.insert(*ite);
+    for(map<int, int>::iterator ite=events.begin();ite!=events.end();ite++) {
+        if(ite->second != 0) {
+            preEvents.insert(ite->first);
+        }
+        if(ite->second == 0) {
+            events.erase(ite);
+        } else {
+            preEvents.insert(ite->first);
+            if(ite->second > 0) {
+                events[ite->first] --;
+            }
+
+        }
     }
-    events.clear();
     
 }

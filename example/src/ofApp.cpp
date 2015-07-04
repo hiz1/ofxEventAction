@@ -7,17 +7,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    if(ofGetKeyPressed('a')) {
-        chara.raiseEvent('a');
-    } else if(ofGetKeyPressed('d')) {
-        chara.raiseEvent('d');
-    }
-    if(ofGetKeyPressed('w')) {
-        chara.raiseEvent('w');
-    } else if(ofGetKeyPressed('s')) {
-        chara.raiseEvent('s');
-    }
-    chara.update();
+    chara.updateEvent();
 }
 
 //--------------------------------------------------------------
@@ -27,11 +17,12 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    chara.repeatEvent(key);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    chara.stopEvent(key);
 }
 
 //--------------------------------------------------------------

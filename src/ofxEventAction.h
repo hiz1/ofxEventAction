@@ -10,12 +10,18 @@
 #define __example__ofxEventAction__
 
 #include <stdio.h>
+#include <map>
 #include <set>
 
 class ofxEventAction {
 public:
-    void raiseEvent(int type);
-    void update();
+    // イベントを一度だけ起動
+    void fireEvent(int type);
+    // イベントをnum回連続で起動
+    void repeatEvent(int type, int num = -1);
+    // イベントの起動を停止
+    void stopEvent(int type);
+    void updateEvent();
 protected:
     // 連続で同じイベントが起動された場合に初回のみ実行される処理
     virtual void startEvent(int type) = 0;
@@ -25,7 +31,7 @@ protected:
     // ※ 厳密にはイベントが最後に起動された次のフレームに実行される
     virtual void endEvent(int type) = 0;
 private:
-    std::set<int> events;
+    std::map<int, int> events;
     std::set<int> preEvents;
 };
 
