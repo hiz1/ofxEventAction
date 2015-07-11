@@ -22,15 +22,18 @@ void ofxEventAction::stopEvent(int type) {
 
 void ofxEventAction::updateEvent() {
     using namespace std;
+    eventState.clear();
     // イベントの開始時・ループ時処理
     for(map<int, int>::iterator ite=events.begin();ite!=events.end();ite++) {
         if(ite->second == 0) continue;
         if(preEvents.find(ite->first) != preEvents.end()) {
             // 二回目以降の処理
             loopEvent(ite->first);
+            eventState[ite->first] = LOOP;
         } else {
             // 初回処理
             startEvent(ite->first);
+            eventState[ite->first] = START;
         }
     }
     // イベント終了時の処理
@@ -39,6 +42,7 @@ void ofxEventAction::updateEvent() {
         if(fite == events.end() || fite->second == 0) {
             // 終了時の処理
             endEvent(*ite);
+            eventState[*ite] = END;
         }
     }
     
@@ -58,5 +62,9 @@ void ofxEventAction::updateEvent() {
 
         }
     }
-    
+}
+
+int ofxEventAction::getEventState(int type) {
+    if(eventState.count(type) == 0) return NONE;
+    return eventState[type];
 }

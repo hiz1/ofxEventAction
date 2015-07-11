@@ -17,12 +17,16 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    chara.repeatEvent(key);
+    if(key == 'a' || key == 'w' || key == 's' || key == 'd') {
+        chara.repeatEvent(key);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-    chara.stopEvent(key);
+    if(key == 'a' || key == 'w' || key == 's' || key == 'd') {
+        chara.stopEvent(key);
+    }
 }
 
 //--------------------------------------------------------------
