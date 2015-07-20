@@ -29,12 +29,12 @@ public:
     int  getEventState(int type);
 protected:
     // 連続で同じイベントが起動された場合に初回のみ実行される処理
-    virtual void startEvent(int type) {}
+    virtual void startEvent(int type);
     // 連続で同じイベントが起動された場合に二回目以降に実行される処理
-    virtual void loopEvent(int type) {}
+    virtual void loopEvent(int type);
     // 連続で同じイベントが起動された場合に最後に実行される処理
     // ※ 厳密にはイベントが最後に起動された次のフレームに実行される
-    virtual void endEvent(int type) {}
+    virtual void endEvent(int type);
 private:
     std::map<int, int> events;
     std::map<int, int> eventState;

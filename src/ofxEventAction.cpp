@@ -68,3 +68,11 @@ int ofxEventAction::getEventState(int type) {
     if(eventState.count(type) == 0) return NONE;
     return eventState[type];
 }
+
+// 連続で同じイベントが起動された場合に初回のみ実行される処理
+void ofxEventAction::startEvent(int type) {}
+// 連続で同じイベントが起動された場合に二回目以降に実行される処理
+void ofxEventAction::loopEvent(int type) {}
+// 連続で同じイベントが起動された場合に最後に実行される処理
+// ※ 厳密にはイベントが最後に起動された次のフレームに実行される
+void ofxEventAction::endEvent(int type) {}
